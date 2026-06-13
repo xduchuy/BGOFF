@@ -113,15 +113,16 @@ const App: React.FC = () => {
 
   const performBackgroundRemoval = async (file: File) => {
     try {
-      // 1. Keep high resolution: limit to 2048px on iOS to avoid crashes, up to 4096px (4K) on desktop for maximum fidelity
-      const maxDimension = isIOS() ? 2048 : 4096;
+      // 1. Keep resolution safe: limit to 1536px on iOS to prevent memory pressure, 4096px (4K) on desktop
+      const isMobile = isIOS();
+      const maxDimension = isMobile ? 1536 : 4096;
       const optimizedBlob = await resizeImage(file, maxDimension);
 
-      // 2. Perform client-side background removal using the highest-fidelity model
+      // 2. Perform client-side background removal (quantized + CPU on mobile for stability, full + GPU on desktop)
       const processedBlob = await removeBackground(optimizedBlob, {
-        model: 'isnet',        // Full 32-bit float model for maximum precision and beautiful edge details (hair, textures)
-        device: 'gpu',         // Utilize WebGPU/WebGL acceleration for speed
-        proxyToWorker: true,   // Execute in a Web Worker to keep the UI smooth
+        model: isMobile ? 'isnet_quint8' : 'isnet', // 8-bit quantized model (44MB) on iOS, full model (176MB) on desktop
+        device: isMobile ? 'cpu' : 'gpu',           // WASM CPU on iOS to avoid WebGL blank canvas bugs, WebGPU/WebGL on desktop
+        proxyToWorker: true,                        // Execute in Web Worker to keep UI responsive
         progress: (key: string, current: number, total: number) => {
           console.log(`[ML Model Load/Inference] ${key}: ${Math.round((current / total) * 100)}%`);
         }
