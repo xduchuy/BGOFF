@@ -86,11 +86,14 @@ const App: React.FC = () => {
     setAppState('processing');
 
     try {
-      // 1. Optimize image bounds before processing (max 1536px)
-      const optimizedBlob = await resizeImage(originalFile, 1536);
+      // 1. Optimize image bounds before processing (max 1280px for optimal speed & quality balance)
+      const optimizedBlob = await resizeImage(originalFile, 1280);
 
-      // 2. Perform client-side background removal
+      // 2. Perform client-side background removal with optimized configuration
       const processedBlob = await removeBackground(optimizedBlob, {
+        model: 'isnet_quint8', // 8-bit quantized model (44MB vs 176MB default) - 4x faster download/loading
+        device: 'gpu',         // Explicitly utilize WebGPU/WebGL acceleration
+        proxyToWorker: true,   // Execute in a Web Worker to keep the UI smooth and responsive
         progress: (key: string, current: number, total: number) => {
           console.log(`[ML Model Load/Inference] ${key}: ${Math.round((current / total) * 100)}%`);
         }
