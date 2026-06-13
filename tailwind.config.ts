@@ -1,0 +1,76 @@
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#001736",
+        "inverse-on-surface": "#f2f1ed",
+        "inverse-surface": "#2f312e",
+        "surface-container-lowest": "#ffffff",
+        "surface-container": "#efeeea",
+        "on-primary-fixed-variant": "#264778",
+        "on-primary-fixed": "#001b3d",
+        "surface-bright": "#faf9f5",
+        "secondary-container": "#e7e1ae",
+        "tertiary-fixed-dim": "#b7c9d5",
+        "on-primary-container": "#7594ca",
+        "surface-variant": "#e3e2df",
+        "surface-container-low": "#f4f4f0",
+        "error": "#ba1a1a",
+        "outline": "#747780",
+        "on-secondary-fixed": "#1e1c00",
+        "tertiary-container": "#1d2e37",
+        "secondary": "#636037",
+        "on-background": "#1b1c1a",
+        "primary-fixed": "#d6e3ff",
+        "on-error": "#ffffff",
+        "surface-dim": "#dbdad6",
+        "on-primary": "#ffffff",
+        "on-tertiary-container": "#8496a0",
+        "on-secondary": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-surface-variant": "#43474f",
+        "on-tertiary": "#ffffff",
+        "outline-variant": "#c4c6d0",
+        "surface-tint": "#405f91",
+        "tertiary-fixed": "#d3e5f1",
+        "surface-container-high": "#e9e8e4",
+        "surface-container-highest": "#e3e2df",
+        "on-surface": "#1b1c1a",
+        "surface": "#faf9f5",
+        "primary-container": "#002b5b",
+        "on-secondary-fixed-variant": "#4b4822",
+        "primary-fixed-dim": "#a9c7ff",
+        "secondary-fixed-dim": "#cdc897",
+        "background": "#faf9f5",
+        "on-tertiary-fixed-variant": "#384953",
+        "tertiary": "#081922",
+        "on-tertiary-fixed": "#0c1e26",
+        "on-secondary-container": "#67643b",
+        "on-error-container": "#93000a",
+        "secondary-fixed": "#eae4b1",
+        "inverse-primary": "#a9c7ff"
+      },
+      fontFamily: {
+        sans: ['Geist', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
+      borderRadius: {
+        'card': '24px',
+        'sheet': '32px',
+      },
+      boxShadow: {
+        'premium': '0 10px 30px rgba(0, 43, 91, 0.05)',
+        'modal': '0 20px 40px rgba(0, 0, 0, 0.12)',
+      },
+      spacing: {
+        'safe-bottom': 'var(--safe-area-inset-bottom, 34px)',
+      }
+    },
+  },
+  plugins: [],
+} satisfies Config;

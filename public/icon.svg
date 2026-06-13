@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient for Orange Side -->
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fe5f03" />
+      <stop offset="100%" stop-color="#e35002" />
+    </linearGradient>
+
+    <!-- Cleaner, Larger Premium Checkerboard Pattern (32x32px squares) -->
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#FFFFFF" />
+      <rect x="32" width="32" height="32" fill="#F4F4F0" />
+      <rect y="32" width="32" height="32" fill="#F4F4F0" />
+      <rect x="32" y="32" width="32" height="32" fill="#FFFFFF" />
+    </pattern>
+    
+    <!-- Shadow for Chef Hat to give depth -->
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Container with checkerboard background -->
+  <rect width="512" height="512" rx="140" fill="url(#grid)" />
+  
+  <!-- Right Half (Orange Gradient Overlay) -->
+  <path d="M 256 0 
+           L 372 0 
+           A 140 140 0 0 1 512 140 
+           L 512 372 
+           A 140 140 0 0 1 372 512 
+           L 256 512 Z" 
+        fill="url(#orangeGrad)" />
+  
+  <!-- Soft outline separating grid side from external page color -->
+  <path d="M 256 0 
+           L 140 0 
+           A 140 140 0 0 0 0 140 
+           L 0 372 
+           A 140 140 0 0 0 140 512 
+           L 256 512 Z" 
+        fill="none" stroke="rgba(0, 0, 0, 0.02)" stroke-width="2" />
+
+  <!-- Center Cutting/Dividing Line -->
+  <line x1="256" y1="0" x2="256" y2="512" stroke="rgba(255, 255, 255, 0.55)" stroke-width="5" stroke-dasharray="12 12" />
+  <line x1="256" y1="0" x2="256" y2="512" stroke="rgba(0, 23, 54, 0.15)" stroke-width="5" stroke-dasharray="12 12" stroke-dashoffset="12" />
+
+  <!-- Yellow Mascot Head (Wide dome shape matching the original mascot proportions) -->
+  <path d="M 60 512 C 60 335, 480 335, 480 512 Z" fill="#febf00" />
+  
+  <!-- Smiling Closed Eyes (Tilted parallel up-right, exactly matching the original mascot smile) -->
+  <!-- Left Eye -->
+  <path d="M 196 424.5 Q 220 435 286 408" stroke="#000000" stroke-width="22" stroke-linecap="round" fill="none" />
+  
+  <!-- Right Eye -->
+  <path d="M 323 391.5 Q 347 402 413 375" stroke="#000000" stroke-width="22" stroke-linecap="round" fill="none" />
+
+  <!-- Chef Hat Group with drop shadow -->
+  <g filter="url(#shadow)">
+    <!-- Base band shadow (grey base layer) -->
+    <path d="M 148 295 Q 250 325 352 275 L 352 308 Q 250 358 148 328 Z" fill="#f0f0f0" />
+    
+    <!-- White Hat body (unified shapes) -->
+    <g fill="#FFFFFF">
+      <!-- Lower left small puff -->
+      <circle cx="125" cy="275" r="45" />
+      <!-- Medium left puff -->
+      <circle cx="150" cy="210" r="75" />
+      <!-- Large center puff -->
+      <circle cx="240" cy="145" r="95" />
+      <!-- Medium right puff -->
+      <circle cx="350" cy="200" r="80" />
+      <!-- Base band white layer -->
+      <path d="M 150 290 Q 250 320 350 270 L 350 302 Q 250 352 150 322 Z" />
+    </g>
+  </g>
+
+  <!-- Tiny magical spark cuts on the transparent checkerboard side -->
+  <path d="M 85 130 L 92 145 L 107 151 L 92 157 L 85 172 L 78 157 L 63 151 L 78 145 Z" fill="#FFD700" opacity="0.8" />
+  <path d="M 75 270 L 79 277 L 86 280 L 79 283 L 75 290 L 71 283 L 64 280 L 71 277 Z" fill="#FFD700" opacity="0.6" />
+</svg>

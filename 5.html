@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>ClearCut - Install App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#001736",
+                    "inverse-on-surface": "#f2f1ed",
+                    "inverse-surface": "#2f312e",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#efeeea",
+                    "on-primary-fixed-variant": "#264778",
+                    "on-primary-fixed": "#001b3d",
+                    "surface-bright": "#faf9f5",
+                    "secondary-container": "#e7e1ae",
+                    "tertiary-fixed-dim": "#b7c9d5",
+                    "on-primary-container": "#7594ca",
+                    "surface-variant": "#e3e2df",
+                    "surface-container-low": "#f4f4f0",
+                    "error": "#ba1a1a",
+                    "outline": "#747780",
+                    "on-secondary-fixed": "#1e1c00",
+                    "tertiary-container": "#1d2e37",
+                    "secondary": "#636037",
+                    "on-background": "#1b1c1a",
+                    "primary-fixed": "#d6e3ff",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#dbdad6",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#8496a0",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#43474f",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c4c6d0",
+                    "surface-tint": "#405f91",
+                    "tertiary-fixed": "#d3e5f1",
+                    "surface-container-high": "#e9e8e4",
+                    "surface-container-highest": "#e3e2df",
+                    "on-surface": "#1b1c1a",
+                    "surface": "#faf9f5",
+                    "primary-container": "#002b5b",
+                    "on-secondary-fixed-variant": "#4b4822",
+                    "primary-fixed-dim": "#a9c7ff",
+                    "secondary-fixed-dim": "#cdc897",
+                    "background": "#faf9f5",
+                    "on-tertiary-fixed-variant": "#384953",
+                    "tertiary": "#081922",
+                    "on-tertiary-fixed": "#0c1e26",
+                    "on-secondary-container": "#67643b",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#eae4b1",
+                    "inverse-primary": "#a9c7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "20px",
+                    "base": "4px",
+                    "gutter": "16px",
+                    "safe-area-bottom": "34px",
+                    "xs": "8px",
+                    "md": "24px",
+                    "xl": "48px",
+                    "sm": "16px",
+                    "lg": "32px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Geist"],
+                    "body-lg": ["Geist"],
+                    "body-sm": ["Geist"],
+                    "button": ["Geist"],
+                    "display-lg": ["Geist"],
+                    "label-md": ["Geist"],
+                    "headline-lg-mobile": ["Geist"],
+                    "title-md": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "button": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "600"}],
+                    "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Geist', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        @keyframes slide-up {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .animate-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .bg-grid { background-size: 20px 20px; background-image: radial-gradient(circle, #001736 1px, transparent 1px); opacity: 0.05; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen overflow-hidden">
+<!-- Mock Background App Content (Focused Workspace) -->
+<main class="relative h-screen flex flex-col pt-16">
+<!-- TopAppBar Placeholder (Using JSON styles) -->
+<header class="fixed top-0 w-full z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg border-b border-outline-variant/10 shadow-sm flex items-center justify-between px-container-margin h-16 w-full max-w-md mx-auto left-1/2 -translate-x-1/2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="auto_fix_high">auto_fix_high</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary">ClearCut</h1>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-button text-button shadow-md">Install</button>
+</header>
+<!-- Main Canvas Area -->
+<div class="flex-1 px-container-margin py-8 flex flex-col gap-6 overflow-y-auto pb-32">
+<div class="w-full aspect-[4/5] rounded-[24px] overflow-hidden border border-outline-variant/20 shadow-xl bg-surface-container relative group">
+<div class="absolute inset-0 bg-grid"></div>
+<img class="w-full h-full object-cover" data-alt="A high-end studio product photograph of a sleek designer perfume bottle placed on a minimalist ivory pedestal. The background is a soft, pale blue gradient with professional three-point lighting creating sharp, clean shadows. The image has a premium, professional tool aesthetic with high contrast and pristine clarity, perfectly fitting a sophisticated creative application interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUPgdgugVdcAXDevkguLuGG1_7yJAhFChsnpA9qLntJnJRRMWBIlyweovPUREC0LDxYUH4XMh6sTxZkQcQkBC8bL94TdF2feQbP9iLw0I8OGMecB_FVsd_T8C6yB0x3mf8dvfm-0V2O8fwrJsYcA_DE6yaoraP2NNVGnuAA--qaUZOIpVrp7FqOKQLN6FDY_MDNhII6G0BOKGLYsiYAsrfBEP7B_XNz8jImKxAen-72jDoSm3W17A6YnvhdR8wO2jvMegxyomVbA"/>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-center px-4 py-3 bg-white/60 backdrop-blur-md rounded-2xl border border-white/40">
+<span class="text-primary font-title-md text-title-md">Product_01.jpg</span>
+<span class="material-symbols-outlined text-primary" data-icon="edit">edit</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white p-4 rounded-[24px] border border-outline-variant/10 shadow-sm flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary p-3 bg-primary-fixed rounded-full" data-icon="ink_eraser">ink_eraser</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Remove BG</span>
+</div>
+<div class="bg-white p-4 rounded-[24px] border border-outline-variant/10 shadow-sm flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary p-3 bg-primary-fixed rounded-full" data-icon="wallpaper">wallpaper</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Templates</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Overlay Backdrop -->
+<div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-[60] transition-opacity duration-300 opacity-100" id="modal-overlay"></div>
+<!-- PWA Install Prompt Modal -->
+<section class="fixed bottom-0 left-0 right-0 z-[70] flex justify-center items-end pointer-events-none" id="install-modal">
+<div class="w-full max-w-md bg-surface border-t border-outline-variant/10 rounded-t-[32px] p-8 pb-[calc(2rem+safe-area-bottom)] animate-slide-up pointer-events-auto shadow-[0_-20px_40px_rgba(0,23,54,0.1)]">
+<!-- Handle for visual cue -->
+<div class="w-12 h-1.5 bg-outline-variant/40 rounded-full mx-auto mb-8"></div>
+<div class="flex flex-col items-center text-center">
+<!-- Brand Icon -->
+<div class="w-20 h-20 bg-primary rounded-[24px] flex items-center justify-center mb-6 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-[48px]" data-icon="content_cut">content_cut</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-3">Add ClearCut to your Home Screen</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant px-4 mb-10">
+                    Tap the share button and select <span class="font-bold text-primary">"Add to Home Screen"</span> to use ClearCut anytime, even offline.
+                </p>
+<!-- Visual Guide Section -->
+<div class="w-full bg-surface-container-low rounded-3xl p-5 mb-8 flex items-center gap-4 text-left border border-outline-variant/5">
+<div class="flex-shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="ios_share">ios_share</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-primary uppercase tracking-wider mb-1">Instruction</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Look for the share icon in your browser menu.</div>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary rounded-[24px] font-button text-button shadow-xl active:scale-95 transition-transform duration-150" onclick="closeModal()">
+                    Got it
+                </button>
+</div>
+</div>
+</section>
+<!-- Navigation suppressed per logic (Linear/Onboarding-like state) -->
+<script>
+        function closeModal() {
+            const modal = document.getElementById('install-modal');
+            const overlay = document.getElementById('modal-overlay');
+            
+            modal.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            modal.style.transform = 'translateY(100%)';
+            overlay.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+
+        // Auto-show logic simulation
+        window.addEventListener('DOMContentLoaded', () => {
+            // Ensure visibility classes are present
+            const modal = document.getElementById('install-modal');
+            const overlay = document.getElementById('modal-overlay');
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        });
+    </script>
+</body></html>

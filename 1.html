@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .light-trail-animation {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 23, 54, 0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 999px;
+        }
+
+        .light-trail-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #001736, transparent);
+            animation: light-trail 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        @keyframes light-trail {
+            0% { left: -100%; }
+            100% { left: 150%; }
+        }
+
+        .pulse-subtle {
+            animation: pulse-subtle 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#001736",
+                        "inverse-on-surface": "#f2f1ed",
+                        "inverse-surface": "#2f312e",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#efeeea",
+                        "on-primary-fixed-variant": "#264778",
+                        "on-primary-fixed": "#001b3d",
+                        "surface-bright": "#faf9f5",
+                        "secondary-container": "#e7e1ae",
+                        "tertiary-fixed-dim": "#b7c9d5",
+                        "on-primary-container": "#7594ca",
+                        "surface-variant": "#e3e2df",
+                        "surface-container-low": "#f4f4f0",
+                        "error": "#ba1a1a",
+                        "outline": "#747780",
+                        "on-secondary-fixed": "#1e1c00",
+                        "tertiary-container": "#1d2e37",
+                        "secondary": "#636037",
+                        "on-background": "#1b1c1a",
+                        "primary-fixed": "#d6e3ff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dbdad6",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#8496a0",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#43474f",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c4c6d0",
+                        "surface-tint": "#405f91",
+                        "tertiary-fixed": "#d3e5f1",
+                        "surface-container-high": "#e9e8e4",
+                        "surface-container-highest": "#e3e2df",
+                        "on-surface": "#1b1c1a",
+                        "surface": "#faf9f5",
+                        "primary-container": "#002b5b",
+                        "on-secondary-fixed-variant": "#4b4822",
+                        "primary-fixed-dim": "#a9c7ff",
+                        "secondary-fixed-dim": "#cdc897",
+                        "background": "#faf9f5",
+                        "on-tertiary-fixed-variant": "#384953",
+                        "tertiary": "#081922",
+                        "on-tertiary-fixed": "#0c1e26",
+                        "on-secondary-container": "#67643b",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#eae4b1",
+                        "inverse-primary": "#a9c7ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "20px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "safe-area-bottom": "34px",
+                        "xs": "8px",
+                        "md": "24px",
+                        "xl": "48px",
+                        "sm": "16px",
+                        "lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "body-sm": ["Geist"],
+                        "button": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "title-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "button": ["16px", {"lineHeight": "1", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-lg text-on-surface overflow-hidden">
+<!-- Background Content (Blurred image) -->
+<div class="relative w-full h-screen overflow-hidden">
+<img alt="Original Image Background" class="w-full h-full object-cover blur-2xl scale-110 opacity-60" data-alt="A professional product photograph of a sleek minimalist espresso machine set against a complex lifestyle background with soft morning shadows. The image is artistically blurred to create a sense of depth and focus preparation. The color palette features ivory tones and deep navy accents, maintaining a high-end, clean aesthetic consistent with a premium creative tool interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv1hpAeXlmDudfH-clFwpAbRG0kfEqTFXokcCJsC7BCt5GQTIqIAVjqLiJJzvbueFvJ4WA6aKEyFxf0xv_2UEQP1fqSTuLQeF30qFZfOoCeU1YyCIj9km3QArZXWRu-fe9yizOEvAshZV1RWN9K6KB4ywq84hKe-gm-JyS_hyIEoyPecWXZhibTh2N6rBs7TxrjKNwySRw2XzZaA--YVWSuTSnLHKmdr5kUxOyj5xA02tve8x1ga_ad2A07fRokX0xXw7iH5NEHg"/>
+<!-- UI Shell (Behind overlay) -->
+<header class="fixed top-0 w-full z-10 flex items-center justify-between px-container-margin h-16 max-w-md mx-auto left-1/2 -translate-x-1/2 opacity-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">auto_fix_high</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary">ClearCut</span>
+</div>
+</header>
+</div>
+<!-- Processing Overlay -->
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-container-margin">
+<!-- Glassmorphic Card Container -->
+<div class="bg-white/40 backdrop-blur-3xl w-full max-w-xs rounded-[32px] p-lg shadow-xl border border-white/30 flex flex-col items-center text-center floating-element">
+<!-- Icon/Visual Element -->
+<div class="relative w-24 h-24 mb-lg">
+<div class="absolute inset-0 bg-primary/5 rounded-full pulse-subtle"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-size: 48px; font-variation-settings: 'FILL' 1;">ink_eraser</span>
+</div>
+</div>
+<!-- Labels -->
+<h2 class="font-title-md text-title-md text-primary mb-xs">Removing background...</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[200px] mb-lg">Processing locally on your device for maximum privacy</p>
+<!-- Progress Bar with Light Trail -->
+<div class="w-full max-w-[180px] mb-md">
+<div class="light-trail-animation"></div>
+</div>
+<!-- Progress percentage indicator (Optional but adds to modern tool feel) -->
+<span class="font-label-md text-label-md text-primary/60 tracking-widest uppercase">Initializing AI</span>
+</div>
+</div>
+<!-- Fixed Top Bar (Active Component Style) -->
+<div class="fixed top-0 w-full z-[70] h-16 bg-surface/10 backdrop-blur-sm border-b border-outline-variant/10">
+<div class="flex items-center justify-between px-container-margin h-full w-full max-w-md mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">auto_fix_high</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary">ClearCut</span>
+</div>
+<button class="bg-surface-container-high px-4 py-1.5 rounded-full text-label-md font-button text-primary/40 pointer-events-none">
+                Install
+            </button>
+</div>
+</div>
+<!-- Bottom Navigation Shell (Inactive/Ghost state during processing) -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex justify-around items-center px-4 py-2 w-[90%] max-w-sm bg-surface-container-high/40 backdrop-blur-xl border border-white/10 rounded-full opacity-30 pointer-events-none">
+<div class="p-3 text-on-surface-variant">
+<span class="material-symbols-outlined">ink_eraser</span>
+</div>
+<div class="p-3 text-on-surface-variant">
+<span class="material-symbols-outlined">wallpaper</span>
+</div>
+<div class="p-3 text-on-surface-variant">
+<span class="material-symbols-outlined">download</span>
+</div>
+<div class="p-3 text-on-surface-variant">
+<span class="material-symbols-outlined">restart_alt</span>
+</div>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        // Simulate progress text updates for realism
+        const statusTexts = [
+            "Analyzing subject edge...",
+            "Smoothing contours...",
+            "Finalizing transparency...",
+            "Optimizing image..."
+        ];
+        
+        let currentIndex = 0;
+        const subtextElement = document.querySelector('h2');
+        
+        if(subtextElement) {
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % statusTexts.length;
+                subtextElement.style.opacity = '0';
+                setTimeout(() => {
+                    subtextElement.innerText = statusTexts[currentIndex];
+                    subtextElement.style.opacity = '1';
+                }, 300);
+            }, 3000);
+            
+            subtextElement.style.transition = 'opacity 0.3s ease-in-out';
+        }
+    </script>
+</body></html>
