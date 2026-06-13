@@ -24,7 +24,8 @@ export async function downloadImage(
   imageSrc: string,
   filename: string,
   backgroundType: 'transparent' | 'white' | 'black' | 'gradient' | 'custom',
-  customColor?: string
+  customColor?: string,
+  featherAmount: number = 0
 ): Promise<void> {
   try {
     const img = await loadImage(imageSrc);
@@ -60,8 +61,14 @@ export async function downloadImage(
       }
     }
 
-    // 2. Draw Subject Overlay
+    // 2. Draw Subject Overlay (Apply edge feathering filter if enabled)
+    if (featherAmount > 0) {
+      ctx.filter = 'url(#feather-filter)';
+    }
     ctx.drawImage(img, 0, 0);
+    if (featherAmount > 0) {
+      ctx.filter = 'none';
+    }
 
     // 3. Export and Trigger Download
     const exportFormat = backgroundType === 'transparent' ? 'image/png' : 'image/jpeg';

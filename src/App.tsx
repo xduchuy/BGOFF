@@ -55,6 +55,34 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // Global Clipboard Paste (Ctrl+V) listener
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      // Do not trigger paste if we are currently processing or already showing results
+      if (appState === 'processing') return;
+
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.startsWith('image/')) {
+          const file = items[i].getAsFile();
+          if (file) {
+            // Create a pseudo file name if clipboard file doesn't have a valid one
+            const pasteFile = file.name ? file : new File([file], `clipboard_${Date.now()}.png`, { type: file.type });
+            handleFileSelect(pasteFile);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => {
+      window.removeEventListener('paste', handlePaste);
+    };
+  }, [appState]);
+
   // Cleanup helper to prevent memory leaks with Object URLs
   const clearObjectUrls = () => {
     if (originalSrc) {
@@ -73,22 +101,21 @@ const App: React.FC = () => {
       setOriginalFile(file);
       const previewUrl = URL.createObjectURL(file);
       setOriginalSrc(previewUrl);
-      setAppState('selected');
+      
+      // Auto-trigger background removal immediately!
+      setAppState('processing');
+      await performBackgroundRemoval(file);
     } catch (error: any) {
       setErrorMessage(error.message || 'Không thể chọn ảnh này.');
       setAppState('error');
     }
   };
 
-  const handleRemoveBackground = async () => {
-    if (!originalFile) return;
-
-    setAppState('processing');
-
+  const performBackgroundRemoval = async (file: File) => {
     try {
       // 1. Keep high resolution: limit to 2048px on iOS to avoid crashes, up to 4096px (4K) on desktop for maximum fidelity
       const maxDimension = isIOS() ? 2048 : 4096;
-      const optimizedBlob = await resizeImage(originalFile, maxDimension);
+      const optimizedBlob = await resizeImage(file, maxDimension);
 
       // 2. Perform client-side background removal using the highest-fidelity model
       const processedBlob = await removeBackground(optimizedBlob, {
@@ -120,16 +147,22 @@ const App: React.FC = () => {
     }
   };
 
-  const handleDownloadPNG = () => {
-    if (!resultSrc || !originalFile) return;
-    const nameWithoutExt = originalFile.name.substring(0, originalFile.name.lastIndexOf('.')) || 'bgoff_output';
-    downloadImage(resultSrc, nameWithoutExt, 'transparent');
+  const handleRemoveBackground = async () => {
+    if (!originalFile) return;
+    setAppState('processing');
+    await performBackgroundRemoval(originalFile);
   };
 
-  const handleSaveWithBackground = (preset: BackgroundPresetType, customColor: string) => {
+  const handleDownloadPNG = (featherAmount: number = 0) => {
     if (!resultSrc || !originalFile) return;
     const nameWithoutExt = originalFile.name.substring(0, originalFile.name.lastIndexOf('.')) || 'bgoff_output';
-    downloadImage(resultSrc, nameWithoutExt, preset, customColor);
+    downloadImage(resultSrc, nameWithoutExt, 'transparent', undefined, featherAmount);
+  };
+
+  const handleSaveWithBackground = (preset: BackgroundPresetType, customColor: string, featherAmount: number = 0) => {
+    if (!resultSrc || !originalFile) return;
+    const nameWithoutExt = originalFile.name.substring(0, originalFile.name.lastIndexOf('.')) || 'bgoff_output';
+    downloadImage(resultSrc, nameWithoutExt, preset, customColor, featherAmount);
   };
 
   const handleChooseAnother = () => {
@@ -290,7 +323,7 @@ const App: React.FC = () => {
 
             {/* Tab: Export */}
             <button 
-              onClick={handleDownloadPNG}
+              onClick={() => handleDownloadPNG(0)}
               disabled={!resultSrc}
               className={`flex flex-col items-center justify-center gap-1 group active-scale ${
                 !resultSrc ? 'opacity-40 cursor-not-allowed' : ''

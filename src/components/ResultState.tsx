@@ -4,8 +4,8 @@ import { BackgroundPresets, BackgroundPresetType } from './BackgroundPresets';
 interface ResultStateProps {
   originalSrc: string;
   resultSrc: string;
-  onDownloadPNG: () => void;
-  onSaveWithBackground: (preset: BackgroundPresetType, customColor: string) => void;
+  onDownloadPNG: (feather: number) => void;
+  onSaveWithBackground: (preset: BackgroundPresetType, customColor: string, feather: number) => void;
   onChooseAnother: () => void;
 }
 
@@ -19,6 +19,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
   const [selectedPreset, setSelectedPreset] = useState<BackgroundPresetType>('transparent');
   const [customColor, setCustomColor] = useState<string>('#cbd5e1'); // default silver
   const [sliderPosition, setSliderPosition] = useState<number>(50);
+  const [featherAmount, setFeatherAmount] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
@@ -70,6 +71,24 @@ export const ResultState: React.FC<ResultStateProps> = ({
   return (
     <div className="w-full flex flex-col gap-6">
       
+      {/* SVG filter definition for real-time edge feathering/smoothing */}
+      <svg height="0" width="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+        <defs>
+          <filter id="feather-filter">
+            {/* 1. Blur alpha boundary */}
+            <feGaussianBlur stdDeviation={featherAmount} result="blur" />
+            
+            {/* 2. Soften and keep structure */}
+            <feComponentTransfer result="alpha-adjust">
+              <feFuncA type="linear" slope="1" />
+            </feComponentTransfer>
+            
+            {/* 3. Composite back inside mask */}
+            <feComposite operator="in" in="SourceGraphic" in2="alpha-adjust" />
+          </filter>
+        </defs>
+      </svg>
+
       {/* Result Card: aspect-square, rounded-[32px] */}
       <div
         ref={containerRef}
@@ -88,6 +107,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
             src={resultSrc}
             alt="Subject isolated"
             className="max-w-[90%] max-h-[90%] object-contain pointer-events-none drop-shadow-2xl"
+            style={{ filter: featherAmount > 0 ? 'url(#feather-filter)' : 'none' }}
           />
           
           {/* Floating Indicator (Moved to top-right to prevent conflict with left-side Original badge) */}
@@ -144,10 +164,32 @@ export const ResultState: React.FC<ResultStateProps> = ({
         }}
       />
 
+      {/* Edge Feathering Slider */}
+      <div className="flex flex-col gap-2 bg-white/40 backdrop-blur-md rounded-3xl p-4 border border-[#E0F2FE]">
+        <div className="flex justify-between items-center px-1">
+          <span className="font-title-md text-title-md text-primary flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-xl">blur_on</span>
+            Làm mịn viền (Feathering)
+          </span>
+          <span className="font-label-md text-label-md bg-primary/10 text-primary px-2.5 py-0.5 rounded-full">
+            {featherAmount}px
+          </span>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="8"
+          step="0.5"
+          value={featherAmount}
+          onChange={(e) => setFeatherAmount(parseFloat(e.target.value))}
+          className="w-full accent-primary h-2 bg-primary/10 rounded-lg cursor-pointer"
+        />
+      </div>
+
       {/* Primary Actions */}
       <div className="flex flex-col gap-3 mt-2 w-full">
         <button
-          onClick={onDownloadPNG}
+          onClick={() => onDownloadPNG(featherAmount)}
           className="h-[52px] w-full bg-primary text-white rounded-[24px] font-button text-button shadow-[0_8px_20px_rgba(0,23,54,0.2)] active-scale flex items-center justify-center gap-2"
         >
           <span className="material-symbols-outlined">download</span>
@@ -155,7 +197,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
         </button>
 
         <button
-          onClick={() => onSaveWithBackground(selectedPreset, customColor)}
+          onClick={() => onSaveWithBackground(selectedPreset, customColor, featherAmount)}
           className="h-[52px] w-full bg-secondary-fixed text-on-secondary-fixed-variant rounded-[24px] font-button text-button shadow-[0_8px_20px_rgba(234,228,177,0.3)] active-scale flex items-center justify-center gap-2"
         >
           <span className="material-symbols-outlined">wallpaper</span>
