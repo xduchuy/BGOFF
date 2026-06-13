@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { removeBackground } from '@imgly/background-removal';
+import { removeBackground, preload } from '@imgly/background-removal';
 
 // Utility & platform helper imports
 import { resizeImage } from './utils/image';
@@ -56,6 +56,26 @@ const App: React.FC = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       mediaQuery.removeEventListener('change', handleDisplayModeChange);
     };
+  }, []);
+
+  // Preload the AI model in the background to prevent first-use latency and network timeout crashes
+  useEffect(() => {
+    const isMobile = isIOS();
+    const config = {
+      model: (isMobile ? 'isnet_quint8' : 'isnet') as 'isnet_quint8' | 'isnet',
+      device: (isMobile ? 'cpu' : 'gpu') as 'cpu' | 'gpu',
+      progress: (key: string, current: number, total: number) => {
+        console.log(`[ML Model Preload] ${key}: ${Math.round((current / total) * 100)}%`);
+      }
+    };
+    
+    preload(config)
+      .then(() => {
+        console.log('[ML Model Preload] Model assets successfully cached in background');
+      })
+      .catch((error) => {
+        console.warn('[ML Model Preload] Background preloading failed (will fetch on demand):', error);
+      });
   }, []);
 
   // Global Clipboard Paste (Ctrl+V) listener
