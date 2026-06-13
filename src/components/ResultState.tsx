@@ -90,20 +90,20 @@ export const ResultState: React.FC<ResultStateProps> = ({
             className="max-w-[90%] max-h-[90%] object-contain pointer-events-none drop-shadow-2xl"
           />
           
-          {/* Floating Indicator */}
-          <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg z-10">
+          {/* Floating Indicator (Moved to top-right to prevent conflict with left-side Original badge) */}
+          <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg z-10">
             Subject Isolated
           </div>
         </div>
 
         {/* Left Layer (Original image comparison clipped by slider position) */}
         <div
-          className="absolute inset-0 h-full overflow-hidden bg-white border-r-2 border-white/80 z-20 flex items-center p-8"
+          className="absolute inset-y-0 left-0 overflow-hidden border-r-2 border-white/80 z-20"
           style={{ width: `${sliderPosition}%` }}
         >
           <div
             style={{ width: containerWidth ? `${containerWidth}px` : '100%', height: '100%' }}
-            className="flex items-center justify-center relative flex-shrink-0"
+            className="flex items-center justify-center relative flex-shrink-0 p-8 bg-white"
           >
             <img
               src={originalSrc}
