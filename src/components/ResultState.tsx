@@ -22,6 +22,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
   const [featherAmount, setFeatherAmount] = useState<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // Measure container width for accurate slide calculations
   useEffect(() => {
@@ -43,17 +44,40 @@ export const ResultState: React.FC<ResultStateProps> = ({
     setSliderPosition(percentage);
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (e.touches[0]) {
-      handleMove(e.touches[0].clientX);
-    }
-  };
+  // Global mouse and touch listeners for smooth dragging outside the container
+  useEffect(() => {
+    if (!isDragging) return;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (e.buttons === 1) {
+    const handleWindowMouseMove = (e: MouseEvent) => {
       handleMove(e.clientX);
-    }
-  };
+    };
+
+    const handleWindowMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    const handleWindowTouchMove = (e: TouchEvent) => {
+      if (e.touches[0]) {
+        handleMove(e.touches[0].clientX);
+      }
+    };
+
+    const handleWindowTouchEnd = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener('mousemove', handleWindowMouseMove);
+    window.addEventListener('mouseup', handleWindowMouseUp);
+    window.addEventListener('touchmove', handleWindowTouchMove, { passive: false });
+    window.addEventListener('touchend', handleWindowTouchEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', handleWindowMouseMove);
+      window.removeEventListener('mouseup', handleWindowMouseUp);
+      window.removeEventListener('touchmove', handleWindowTouchMove);
+      window.removeEventListener('touchend', handleWindowTouchEnd);
+    };
+  }, [isDragging, containerWidth]);
 
   const getProcessedBackgroundStyle = (): React.CSSProperties => {
     if (selectedPreset === 'transparent') return {};
@@ -72,7 +96,7 @@ export const ResultState: React.FC<ResultStateProps> = ({
     <div className="w-full flex flex-col gap-6">
       
       {/* SVG filter definition for real-time edge feathering/smoothing */}
-      <svg height="0" width="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+      <svg style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
         <defs>
           <filter id="feather-filter">
             {/* 1. Blur alpha boundary */}
@@ -89,12 +113,20 @@ export const ResultState: React.FC<ResultStateProps> = ({
         </defs>
       </svg>
 
-      {/* Result Card: aspect-square, rounded-[32px] */}
+      {/* Result Card: aspect-square, rounded-[32px] with touch-none for smooth comparison */}
       <div
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
-        className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white border border-[#E0F2FE] shadow-[0_10px_30px_rgba(0,43,91,0.05)] cursor-ew-resize select-none"
+        onMouseDown={(e) => {
+          setIsDragging(true);
+          handleMove(e.clientX);
+        }}
+        onTouchStart={(e) => {
+          setIsDragging(true);
+          if (e.touches[0]) {
+            handleMove(e.touches[0].clientX);
+          }
+        }}
+        className="relative w-full aspect-square rounded-[32px] overflow-hidden bg-white border border-[#E0F2FE] shadow-[0_10px_30px_rgba(0,43,91,0.05)] cursor-ew-resize select-none touch-none"
       >
         {/* Right Layer (Processed image with preset background) */}
         <div

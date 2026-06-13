@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { removeBackground } from '@imgly/background-removal';
 
 // Utility & platform helper imports
@@ -30,6 +30,9 @@ const App: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallSheet, setShowInstallSheet] = useState<boolean>(false);
   const [isAppStandalone, setIsAppStandalone] = useState<boolean>(false);
+
+  // Keep track of the active processing file to prevent race conditions
+  const processingFileRef = useRef<File | null>(null);
 
   // Sync PWA state and capture installation prompts
   useEffect(() => {
@@ -99,6 +102,7 @@ const App: React.FC = () => {
     try {
       clearObjectUrls();
       setOriginalFile(file);
+      processingFileRef.current = file;
       const previewUrl = URL.createObjectURL(file);
       setOriginalSrc(previewUrl);
       
@@ -106,6 +110,7 @@ const App: React.FC = () => {
       setAppState('processing');
       await performBackgroundRemoval(file);
     } catch (error: any) {
+      if (processingFileRef.current !== file) return;
       setErrorMessage(error.message || 'Không thể chọn ảnh này.');
       setAppState('error');
     }
@@ -118,21 +123,48 @@ const App: React.FC = () => {
       const maxDimension = isMobile ? 1536 : 4096;
       const optimizedBlob = await resizeImage(file, maxDimension);
 
+      // Check if this task is still relevant
+      if (processingFileRef.current !== file) return;
+
       // 2. Perform client-side background removal (quantized + CPU on mobile for stability, full + GPU on desktop)
-      const processedBlob = await removeBackground(optimizedBlob, {
-        model: isMobile ? 'isnet_quint8' : 'isnet', // 8-bit quantized model (44MB) on iOS, full model (176MB) on desktop
-        device: isMobile ? 'cpu' : 'gpu',           // WASM CPU on iOS to avoid WebGL blank canvas bugs, WebGPU/WebGL on desktop
-        proxyToWorker: true,                        // Execute in Web Worker to keep UI responsive
-        progress: (key: string, current: number, total: number) => {
-          console.log(`[ML Model Load/Inference] ${key}: ${Math.round((current / total) * 100)}%`);
-        }
-      });
+      let processedBlob: Blob;
+      try {
+        processedBlob = await removeBackground(optimizedBlob, {
+          model: isMobile ? 'isnet_quint8' : 'isnet', // 8-bit quantized model (44MB) on iOS, full model (176MB) on desktop
+          device: isMobile ? 'cpu' : 'gpu',           // WASM CPU on iOS to avoid WebGL blank canvas bugs, WebGPU/WebGL on desktop
+          proxyToWorker: true,                        // Execute in Web Worker to keep UI responsive
+          progress: (key: string, current: number, total: number) => {
+            if (processingFileRef.current === file) {
+              console.log(`[ML Model Load/Inference] ${key}: ${Math.round((current / total) * 100)}%`);
+            }
+          }
+        });
+      } catch (gpuError: any) {
+        // GPU fail fallback to CPU
+        if (processingFileRef.current !== file) return;
+        console.warn('GPU/WebGPU initialization failed, falling back to CPU:', gpuError);
+        
+        processedBlob = await removeBackground(optimizedBlob, {
+          model: isMobile ? 'isnet_quint8' : 'isnet',
+          device: 'cpu', // Fallback to stable WebAssembly CPU execution
+          proxyToWorker: true,
+          progress: (key: string, current: number, total: number) => {
+            if (processingFileRef.current === file) {
+              console.log(`[ML Model Load/Inference (CPU Fallback)] ${key}: ${Math.round((current / total) * 100)}%`);
+            }
+          }
+        });
+      }
+
+      // Check again after long async operation
+      if (processingFileRef.current !== file) return;
 
       // 3. Store result object URL
       const finalUrl = URL.createObjectURL(processedBlob);
       setResultSrc(finalUrl);
       setAppState('result');
     } catch (error: any) {
+      if (processingFileRef.current !== file) return;
       console.error('Error during background removal:', error);
       
       let friendlyError = error.message || '';
@@ -150,6 +182,7 @@ const App: React.FC = () => {
 
   const handleRemoveBackground = async () => {
     if (!originalFile) return;
+    processingFileRef.current = originalFile;
     setAppState('processing');
     await performBackgroundRemoval(originalFile);
   };
@@ -167,6 +200,7 @@ const App: React.FC = () => {
   };
 
   const handleChooseAnother = () => {
+    processingFileRef.current = null; // Cancel any active processing tasks
     clearObjectUrls();
     setOriginalFile(null);
     setAppState('idle');
